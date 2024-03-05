@@ -6,6 +6,7 @@ import { Outlet } from 'react-router-dom';
 import Home from './Home';
 import Progress from './components/progress';
 import ProgressCart from './components/progressCart';
+import ProgressList from './components/progressList';
 
 const App = () => {
 	return (
@@ -13,6 +14,7 @@ const App = () => {
 	
 			{/*<PdfViewer></PdfViewer>*/}
 			{/*<Outlet/>*/}
+			<ProgressList/>
 			<ProgressCart />
 		</>
 		
