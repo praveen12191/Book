@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Box, Container, TextField, Button, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Typography, Box, Container, TextField, Button, Grid, FormControl, InputLabel, Select, MenuItem,Input } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Header from "./Header";
 import axios from 'axios';
@@ -31,7 +31,9 @@ const CreateBook = () => {
                                 <TextField {...register('author_name', { required: 'Author Name is required' })} label='Author Name' variant='outlined' fullWidth error={errors.author_name} helperText={errors.author_name?.message} />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField {...register('pdf_url', { required: 'PDF URL is required' })} label='PDF URL' variant='outlined' fullWidth error={errors.pdf_url} helperText={errors.pdf_url?.message} />
+                                <Typography color='grey'>PDF File</Typography>
+                                <input {...register('pdf', { required: 'PDF URL is required' })} label='PDF File' type="file" error={errors.pdf_url} helperText={errors.pdf_url?.message} />
+                                {/*<TextField {...register('pdf_url', { required: 'PDF URL is required' })} label='PDF URL' variant='outlined' fullWidth error={errors.pdf_url} helperText={errors.pdf_url?.message} />*/}
                             </Grid>
                             <Grid item xs={6}>
                                 <FormControl fullWidth error={errors.genre}>
@@ -70,8 +72,8 @@ const CreateBook = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography color='grey'>Book Cover image</Typography>
-                                {/*<input {...register('bookCoverImage')} type='file' accept='image/*' />*/}
-                                <TextField {...register('img')} label='image' variant='outlined' fullWidth />
+                                <input {...register('image')} type='file' accept='image/*' encType='multipart/form-data' />
+                                {/*<TextField {...register('img')} label='image' variant='outlined' fullWidth />*/}
                             </Grid>
                             <Grid item xs={12}>
                                 <Button type='submit' variant='contained' color='primary' fullWidth sx={{ backgroundColor: '#15F5BA' }}>Submit</Button>

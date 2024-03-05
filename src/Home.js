@@ -6,6 +6,7 @@ import axios from "axios";
 
 import {useState, useEffect, useRef} from 'react'
 import PdfViewer from "./components/PdfViewer";
+import ProgressCart from "./components/progressCart";
 
 function Home() {
     const [allBooks, setAllBooks] = useState([])
@@ -78,7 +79,7 @@ function Home() {
         const token = localStorage.getItem("token")
         const user_id = localStorage.getItem("id")
         axios.get("http://localhost:8000/books", {headers: {'Authorization': `Bearer ${token}`}}).then(result=> setAllBooks(result.data.res))
-        axios.get(`http://localhost:8000/transactions/user_transactions/${user_id}`).then(result=> handleInitialState(result))
+        //axios.get(`http://localhost:8000/transactions/user_transactions/${user_id}`).then(result=> handleInitialState(result))
       }, [])
       
 
@@ -99,6 +100,7 @@ function Home() {
                     <h3>Rented Books</h3>
                     <Carousel breakPoints={breakPoints}>
                         {rentedBooks.map(item => <Cart key={item.id} id={item.book_id} bookName={item.book_name} rating={item.ratings} author={item.author_name} img={item.img}></Cart>)}
+                        <ProgressCart />
                     </Carousel>
                 </div>
 

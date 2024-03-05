@@ -4,14 +4,14 @@ import Typography from '@mui/material/Typography';
 
 function CircularProgressWithLabel(props) {
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <CircularProgress
-        variant="determinate"
-        size={100} // Adjust the size of the circle
-        thickness={6}
-        {...props}
-
-      />
+    <div style={{ position: 'relative', display: 'inline-block', border: '2px solid rgba(0, 0, 0, 0.19)', borderRadius: '50%'}}>
+    <CircularProgress
+      variant="determinate"
+      size={70} // Adjust the size of the circle
+      thickness={4}
+      
+      {...props}
+    />
       <Typography
         variant="caption"
         component="div"

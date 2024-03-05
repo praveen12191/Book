@@ -8,6 +8,7 @@ const Main = () => {
     const [bookCount,setBookCount] = useState(0);
     const [rentCount,setRentCount] = useState(0);
     const [purchaseCount,setPurchaseCount] = useState(0);
+    const [userCount,setUserCount] = useState(0);
 
     useEffect(() => {
         axios.get(`http://localhost:8000/books`).then((response) => {
@@ -22,6 +23,11 @@ const Main = () => {
             const purchasedBooks = transactions.filter(transaction => transaction.purchase_type === 'purchase')
             setPurchaseCount(purchasedBooks.length);
         })
+        
+        axios.get(`http://localhost:8000/admin/users`).then((response) => {
+            setUserCount(response.data.res.length)
+        })
+
     },[bookCount,rentCount,purchaseCount])
 
     return (
@@ -43,7 +49,7 @@ const Main = () => {
                             <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
                                 <Group fontSize='large' />
                                 <Typography variant="h6" fontFamily="Poppins">Total Users</Typography>
-                                <Typography variant="h4" fontFamily="Poppins">0</Typography>
+                                <Typography variant="h4" fontFamily="Poppins">{userCount}</Typography>
                             </Box>
                         </Paper>
                     </Grid>

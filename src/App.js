@@ -11,9 +11,9 @@ const App = () => {
 	return (
 		<>
 	
-			{/* <PdfViewer></PdfViewer>
-			<Outlet/> */}
-			<ProgressCart></ProgressCart>
+			{/*<PdfViewer></PdfViewer>*/}
+			{/*<Outlet/>*/}
+			<ProgressCart />
 		</>
 		
 	);
