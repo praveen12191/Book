@@ -1,19 +1,43 @@
-import React from 'react';
-import { Typography, Box, Container, TextField, Button, Grid, FormControl, InputLabel, Select, MenuItem,Input } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Box, Container, TextField, Button, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Header from "./Header";
 import axios from 'axios';
 
 const CreateBook = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const [image, setImage] = useState(null);
+    const [pdf, setPdf] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(false);
 
-    const onSubmit = (data) => {
-        axios.post('http://localhost:8000/admin/books', data).then(response => {
-            console.log(response)
-        }).catch(function (error) {
-            console.log(error);
-        })
-        console.log(data);
+    const onSubmit = async (data) => {
+        const formData = new FormData();
+        formData.append('book_name', data.book_name);
+        formData.append('author_name', data.author_name);
+        formData.append('pdf', pdf);
+        formData.append('genre', data.genre);
+        formData.append('book_desc', data.book_desc);
+        formData.append('rent_amount', data.rent_amount);
+        formData.append('purchase_amount', data.purchase_amount);
+        formData.append('pages', data.pages);
+        formData.append('ratings', data.ratings);
+        formData.append('image', image);
+
+        try {
+            const response = await axios.post('http://localhost:8000/admin/books', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log(response.data);
+            setSuccessMessage(true); 
+            setTimeout(() => {
+                setSuccessMessage(false); 
+                reset();
+            }, 3000);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -22,6 +46,11 @@ const CreateBook = () => {
             <Container>
                 <Box boxShadow={3} p={5} mt={5}>
                     <Typography variant='h6' mb={3} fontSize='30px' fontWeight='600' sx={{ color: '#211951' }}>Create a New Book</Typography>
+                    {successMessage && (
+                        <Typography variant="subtitle1" color="textPrimary" md= "3">
+                            Book added successfully
+                        </Typography>
+                    )}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={3}>
                             <Grid item xs={6}>
@@ -32,8 +61,11 @@ const CreateBook = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography color='grey'>PDF File</Typography>
-                                <input {...register('pdf', { required: 'PDF URL is required' })} label='PDF File' type="file" error={errors.pdf_url} helperText={errors.pdf_url?.message} />
-                                {/*<TextField {...register('pdf_url', { required: 'PDF URL is required' })} label='PDF URL' variant='outlined' fullWidth error={errors.pdf_url} helperText={errors.pdf_url?.message} />*/}
+                                <input
+                                    filename={pdf}
+                                    onChange={e => setPdf(e.target.files[0])}
+                                    type="file"
+                                ></input>
                             </Grid>
                             <Grid item xs={6}>
                                 <FormControl fullWidth error={errors.genre}>
@@ -72,13 +104,16 @@ const CreateBook = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography color='grey'>Book Cover image</Typography>
-                                <input {...register('image')} type='file' accept='image/*' encType='multipart/form-data' />
-                                {/*<TextField {...register('img')} label='image' variant='outlined' fullWidth />*/}
+                                <input
+                                    filename={image}
+                                    onChange={e => setImage(e.target.files[0])}
+                                    type="file"
+                                    accept="image/*"
+                                ></input>
                             </Grid>
                             <Grid item xs={12}>
-                                <Button type='submit' variant='contained' color='primary' fullWidth sx={{ backgroundColor: '#15F5BA' }}>Submit</Button>
+                                <Button type='submit' variant='contained' color='primary' fullWidth sx={{ backgroundColor: '#15F5BA', mt: 2 }}>Submit</Button>
                             </Grid>
-
                         </Grid>
                     </form>
                 </Box>
@@ -86,4 +121,5 @@ const CreateBook = () => {
         </div>
     );
 }
+
 export default CreateBook;
